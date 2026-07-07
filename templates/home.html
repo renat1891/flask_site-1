@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Головна — USER NEWS{% endblock %}
+{% block content %}
+<section class="news-panel">
+    <div class="news-panel__header">
+        <h1 class="news-panel__title">Останні новини</h1>
+        <span class="live-dot" aria-hidden="true"></span>
+    </div>
+
+    <div class="pills" role="tablist" aria-label="Категорії новин">
+        {% for cat in categories %}
+        <a href="{{ url_for('home', category=cat) }}" class="pill {% if cat == current_category %}is-active{% endif %}" role="tab">{{ cat }}</a>
+        {% endfor %}
+    </div>
+
+    <ol class="news-list">
+        {% for item in news %}
+        <li class="news-list__row {% if item.featured %}is-featured{% endif %}">
+            <span class="news-list__time">{{ item.published_at.strftime('%H:%M') }}</span>
+            <a href="#" class="news-list__title">{{ item.title }}</a>
+            <span class="news-list__tags">
+                {% for cat in item.category_list %}
+                <span class="news-list__tag">{{ cat }}</span>
+                {% endfor %}
+            </span>
+        </li>
+        {% else %}
+        <li class="news-list__empty">Новин у цій категорії поки немає.</li>
+        {% endfor %}
+    </ol>
+</section>
+{% endblock %}
